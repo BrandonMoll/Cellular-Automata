@@ -7,10 +7,12 @@ GRAY = (25, 25, 25)
 WIN_SIZE = 500
 
 cur_states = [0] * 400
-cur_states[10] = 1
-cur_states[30] = 1
-cur_states[50] = 1
 next_states = [0] * 400
+
+for i in range(400):
+    roll = random.randint(0, 10)
+    if roll < 1:
+        cur_states[i] = 1
 
 pygame.init()
  
