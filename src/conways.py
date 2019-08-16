@@ -4,27 +4,34 @@ import pygame, random
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GRAY = (25, 25, 25)
+BLUE = (0, 0, 255)
 WIN_SIZE = 500
+WIDTH_SIZE = 600
 
 cur_states = [0] * 400
+cur_states[10] = 1
+cur_states[30] = 1
+cur_states[50] = 1
 next_states = [0] * 400
-
-for i in range(400):
-    roll = random.randint(0, 10)
-    if roll < 1:
-        cur_states[i] = 1
+generation = 0
+# for i in range(400):
+#     roll = random.randint(0, 10)
+#     if roll < 1:
+#         cur_states[i] = 1
 
 pygame.init()
  
 # Set the width and height of the screen [width, height]
-size = (WIN_SIZE, WIN_SIZE)
+size = (WIDTH_SIZE, WIN_SIZE)
 screen = pygame.display.set_mode(size)
 
 # Add a title
-pygame.display.set_caption("Conway's Game of Life")
+#Buttons
+pause_button = pygame.draw.rect(screen, BLUE, pygame.Rect(0, 0, 100, 50))
  
 # Loop until the user clicks the close button.
 done = False
+paused = False
  
 # Used to manage how fast the screen updates
 clock = pygame.time.Clock()
@@ -37,230 +44,158 @@ while not done:
             done = True
  
     # --- Game logic should go here
+
+    if event.type == pygame.MOUSEBUTTONDOWN:         
+        click_pos = pygame.mouse.get_pos()  
+        print(click_pos)     
+        if pause_button.collidepoint(click_pos):        
+            paused = not paused
+
     def check_neighbors(current, index):
-        dead_neighbors = []
-        alive_neighbors = []
+        alive_neighbors = 0
         if index == 0:
-            if current[index + 20] == 0:
-                dead_neighbors.append(0)
-            else:
-                alive_neighbors.append(1)
+            if current[index + 20] == 1:
+                alive_neighbors += 1
 
-            if current[index + 1] == 0:
-                dead_neighbors.append(0)
-            else:
-                alive_neighbors.append(1)
+            if current[index + 1] == 1:
+                alive_neighbors += 1
 
-            if current[index + 21] == 0:
-                dead_neighbors.append(0)
-            else:
-                alive_neighbors.append(1)
+            if current[index + 21] == 1:
+                alive_neighbors += 1
         elif index == 19:
-            if current[index + 20] == 0:
-                dead_neighbors.append(0)
-            else:
-                alive_neighbors.append(1)
+            if current[index + 20] == 1:
+                alive_neighbors += 1
 
-            if current[index - 1] == 0:
-                dead_neighbors.append(0)
-            else:
-                alive_neighbors.append(1)
+            if current[index - 1] == 1:
+                alive_neighbors += 1
 
-            if current[index + 19] == 0:
-                dead_neighbors.append(0)
-            else:
-                alive_neighbors.append(1)
+            if current[index + 19] == 1:
+                alive_neighbors += 1
         elif index == 380:
-            if current[index - 20] == 0:
-                dead_neighbors.append(0)
-            else:
-                alive_neighbors.append(1)
+            if current[index - 20] == 1:
+                alive_neighbors += 1
 
-            if current[index + 1] == 0:
-                dead_neighbors.append(0)
-            else:
-                alive_neighbors.append(1)
+            if current[index + 1] == 1:
+                alive_neighbors += 1
 
-            if current[index - 19] == 0:
-                dead_neighbors.append(0)
-            else:
-                alive_neighbors.append(1)
+            if current[index - 19] == 1:
+                alive_neighbors += 1
         elif index == 399:
-            if current[index - 20] == 0:
-                dead_neighbors.append(0)
-            else:
-                alive_neighbors.append(1)
+            if current[index - 20] == 1:
+                alive_neighbors += 1
 
-            if current[index - 1] == 0:
-                dead_neighbors.append(0)
-            else:
-                alive_neighbors.append(1)
+            if current[index - 1] == 1:
+                alive_neighbors += 1
 
-            if current[index - 21] == 0:
-                dead_neighbors.append(0)
-            else:
-                alive_neighbors.append(1)
+            if current[index - 21] == 1:
+                alive_neighbors += 1
         elif index % 20 == 0:
-            if current[index - 20] == 0:
-                dead_neighbors.append(0)
-            else:
-                alive_neighbors.append(1)
+            if current[index - 20] == 1:
+                alive_neighbors += 1
 
-            if current[index + 20] == 0:
-                dead_neighbors.append(0)
-            else:
-                alive_neighbors.append(1)
+            if current[index + 20] == 1:
+                alive_neighbors += 1
 
-            if current[index - 19] == 0:
-                dead_neighbors.append(0)
-            else:
-                alive_neighbors.append(1)
+            if current[index - 19] == 1:
+                alive_neighbors += 1
 
-            if current[index + 1] == 0:
-                dead_neighbors.append(0)
-            else:
-                alive_neighbors.append(1)
+            if current[index + 1] == 1:
+                alive_neighbors += 1
 
-            if current[index + 21] == 0:
-                dead_neighbors.append(0)
-            else:
-                alive_neighbors.append(1)
+            if current[index + 21] == 1:
+                alive_neighbors += 1
         elif (index + 1) % 20 == 0:
-            if current[index - 20] == 0:
-                dead_neighbors.append(0)
-            else:
-                alive_neighbors.append(1)
+            if current[index - 20] == 1:
+                alive_neighbors += 1
 
-            if current[index + 20] == 0:
-                dead_neighbors.append(0)
-            else:
-                alive_neighbors.append(1)
+            if current[index + 20] == 1:
+                alive_neighbors += 1
 
-            if current[index - 21] == 0:
-                dead_neighbors.append(0)
-            else:
-                alive_neighbors.append(1)
+            if current[index - 21] == 1:
+                alive_neighbors += 1
 
-            if current[index - 1] == 0:
-                dead_neighbors.append(0)
-            else:
-                alive_neighbors.append(1)
+            if current[index - 1] == 1:
+                alive_neighbors += 1
 
-            if current[index + 19] == 0:
-                dead_neighbors.append(0)
-            else:
-                alive_neighbors.append(1)
+            if current[index + 19] == 1:
+                alive_neighbors += 1
         elif index - 19 <= 0:
-            if current[index - 1] == 0:
-                dead_neighbors.append(0)
-            else:
-                alive_neighbors.append(1)
+            if current[index - 1] == 1:
+                alive_neighbors += 1
 
-            if current[index + 1] == 0:
-                dead_neighbors.append(0)
-            else:
-                alive_neighbors.append(1)
+            if current[index + 1] == 1:
+                alive_neighbors += 1
 
-            if current[index + 19] == 0:
-                dead_neighbors.append(0)
-            else:
-                alive_neighbors.append(1)
+            if current[index + 19] == 1:
+                alive_neighbors += 1
 
-            if current[index + 20] == 0:
-                dead_neighbors.append(0)
-            else:
-                alive_neighbors.append(1)
+            if current[index + 20] == 1:
+                alive_neighbors += 1
 
-            if current[index + 21] == 0:
-                dead_neighbors.append(0)
-            else:
-                alive_neighbors.append(1)
+            if current[index + 21] == 1:
+                alive_neighbors += 1
         elif index + 19 >= 400:
-            if current[index - 1] == 0:
-                dead_neighbors.append(0)
-            else:
-                alive_neighbors.append(1)
+            if current[index - 1] == 1:
+                alive_neighbors += 1
 
-            if current[index + 1] == 0:
-                dead_neighbors.append(0)
-            else:
-                alive_neighbors.append(1)
+            if current[index + 1] == 1:
+                alive_neighbors += 1
 
-            if current[index - 19] == 0:
-                dead_neighbors.append(0)
-            else:
-                alive_neighbors.append(1)
+            if current[index - 19] == 1:
+                alive_neighbors += 1
 
-            if current[index - 20] == 0:
-                dead_neighbors.append(0)
-            else:
-                alive_neighbors.append(1)
+            if current[index - 20] == 1:
+                alive_neighbors += 1
 
-            if current[index - 21] == 0:
-                dead_neighbors.append(0)
-            else:
-                alive_neighbors.append(1)
+            if current[index - 21] == 1:
+                alive_neighbors += 1
         else:
-            if current[index + 1] == 0:
-                dead_neighbors.append(0)
-            else:
-                alive_neighbors.append(1)
+            if current[index + 1] == 1:
+                alive_neighbors += 1
 
-            if current[index - 1] == 0:
-                dead_neighbors.append(0)
-            else:
-                alive_neighbors.append(1)
+            if current[index - 1] == 1:
+                alive_neighbors += 1
 
-            if current[index + 20] == 0:
-                dead_neighbors.append(0)
-            else:
-                alive_neighbors.append(1)
+            if current[index + 20] == 1:
+                alive_neighbors += 1
 
-            if current[index - 20] == 0:
-                dead_neighbors.append(0)
-            else:
-                alive_neighbors.append(1)
+            if current[index - 20] == 1:
+                alive_neighbors += 1
 
-            if current[index + 21] == 0:
-                dead_neighbors.append(0)
-            else:
-                alive_neighbors.append(1)
+            if current[index + 21] == 1:
+                alive_neighbors += 1
 
-            if current[index - 21] == 0:
-                dead_neighbors.append(0)
-            else:
-                alive_neighbors.append(1)
+            if current[index - 21] == 1:
+                alive_neighbors += 1
 
-            if current[index + 19] == 0:
-                dead_neighbors.append(0)
-            else:
-                alive_neighbors.append(1)
+            if current[index + 19] == 1:
+                alive_neighbors += 1
 
-            if current[index - 19] == 0:
-                dead_neighbors.append(0)
-            else:
-                alive_neighbors.append(1)
+            if current[index - 19] == 1:
+                alive_neighbors += 1
 
         if current[index] == 0:
-            if len(alive_neighbors) >= 3:
+            if alive_neighbors >= 3:
                 return 1
             else:
                 return 0
         else:
-            if len(alive_neighbors) == 2 or len(alive_neighbors) == 3:
+            if alive_neighbors == 2 or alive_neighbors == 3:
                 return 1
-            elif len(alive_neighbors) >= 4:
+            elif alive_neighbors >= 4:
                 return 0
-            elif len(alive_neighbors) <= 1:
+            elif alive_neighbors <= 1:
                 return 0
 
-    for i in range(len(cur_states)):
-        next_states[i] = check_neighbors(cur_states, i)
 
+    
+    if not paused:
+        for i in range(len(cur_states)):
+            next_states[i] = check_neighbors(cur_states, i)
 
-
-
-
+        generation += 1
+    
+    pygame.display.set_caption(f'Conway\'s Game of Life, Generation: {generation}')
 
  
     # --- Screen-clearing code goes here
@@ -270,9 +205,10 @@ while not done:
     screen.fill(GRAY)
  
     # --- Drawing code should go here
+    pygame.draw.rect(screen, BLUE, pygame.Rect(0, 0, 100, 50))
     cur_index = 0
-    x = 3
-    while x < 500:
+    x = 103
+    while x < 600:
         y = 3
         while y < 500:
             state = cur_states[cur_index]
@@ -283,14 +219,16 @@ while not done:
             cur_index += 1
             y += 25
         x += 25
-    
-        cur_states = next_states
+    if not paused:
+        for i in range(len(cur_states)):
+            cur_states[i] = next_states[i]
+
 
     # --- Go ahead and update the screen with what we've drawn.
     pygame.display.flip()
- 
+    
     # --- Limit to 5 frames per second
-    clock.tick(1)
+    clock.tick(5)
  
 # Close the window and quit.
 pygame.quit()
